@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.data.Address;
+import com.example.data.Book;
 import com.example.data.User;
 
 import javax.inject.Inject;
@@ -21,6 +23,14 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> listUsers() {
         return manager.createQuery("select u from User u", User.class).getResultList();
+    }
+
+    @Path("/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public List<Address> updateBook(@PathParam("id") int id) {
+        return manager.createQuery("SELECT a FROM Address a WHERE a.userID = " + id, Address.class).getResultList();
     }
 
     @POST
