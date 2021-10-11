@@ -4,12 +4,14 @@ import com.example.data.Book;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Table;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/book")
+@Table(name = "Book")
 public class BookResource {
 
     @Inject
