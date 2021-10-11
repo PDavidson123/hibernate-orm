@@ -1,12 +1,15 @@
 package com.example.data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@SequenceGenerator(name="ID_generator", sequenceName = "User", allocationSize=Integer.MAX_VALUE)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_generator")
     private Integer userID;
     private String name;
     private String password;

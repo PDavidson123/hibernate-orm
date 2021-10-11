@@ -1,6 +1,6 @@
 create database hello;
 use hello;
-create table Book(id int, name varchar(10), author varchar(20), pages int);
+CREATE TABLE Book(id int NOT NULL PRIMARY KEY, name varchar(10), author varchar(20), pages int);
 insert into Book values(1,'konyvpls','envagyokaz', 600);
 
-create table Book(userID int, name varchar(10), password varchar(20));
+create table User(userID int NOT NULL PRIMARY KEY, name varchar(10), password varchar(20));

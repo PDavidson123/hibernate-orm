@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/book")
-@Table(name = "Book")
 public class BookResource {
 
     @Inject
