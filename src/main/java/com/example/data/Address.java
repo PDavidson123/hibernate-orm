@@ -20,12 +20,19 @@ public class Address {
 
     }
 
-    public Address(Integer addressID, Integer userID, String city, String roadName, Integer houseNumber) {
+    public Address(Integer addressID, String city, String roadName, Integer houseNumber) {
         this.addressID = addressID;
-        //this.userID = userID;
         this.city = city;
         this.roadName = roadName;
         this.houseNumber = houseNumber;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getAddressID() {
