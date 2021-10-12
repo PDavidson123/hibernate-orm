@@ -29,8 +29,8 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public List<Address> updateBook(@PathParam("id") int id) {
-        return manager.createQuery("SELECT a FROM Address a WHERE a.userID = " + id, Address.class).getResultList();
+    public List<Address> updateUser(@PathParam("id") int id) {
+        return manager.createQuery("SELECT a FROM Address a WHERE a.user.userID = " + id, Address.class).getResultList();
     }
 
     @POST

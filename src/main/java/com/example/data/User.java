@@ -1,6 +1,7 @@
 package com.example.data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -10,6 +11,8 @@ public class User {
     private Integer userID;
     private String name;
     private String password;
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses;
 
     public User() {
 

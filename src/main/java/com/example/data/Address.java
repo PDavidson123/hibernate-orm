@@ -1,9 +1,6 @@
 package com.example.data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Address {
@@ -11,10 +8,13 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
-    private Integer userID;
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
     private String city;
     private String roadName;
     private Integer houseNumber;
+
 
     public Address() {
 
@@ -22,7 +22,7 @@ public class Address {
 
     public Address(Integer addressID, Integer userID, String city, String roadName, Integer houseNumber) {
         this.addressID = addressID;
-        this.userID = userID;
+        //this.userID = userID;
         this.city = city;
         this.roadName = roadName;
         this.houseNumber = houseNumber;
@@ -34,14 +34,6 @@ public class Address {
 
     public void setAddressID(Integer addressID) {
         this.addressID = addressID;
-    }
-
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Integer userID) {
-        this.userID = userID;
     }
 
     public String getCity() {
