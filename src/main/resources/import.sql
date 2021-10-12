@@ -1,7 +1,5 @@
-create database hello;
-use hello;
-CREATE TABLE Book(id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(10), author varchar(20), pages int);
-insert into Book values(1,'konyvpls','envagyokaz', 600);
+create database UserSchema;
+use UserSchema;
 
 create table User(userID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name varchar(50),

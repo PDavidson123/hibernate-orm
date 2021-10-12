@@ -1,7 +1,7 @@
 package com.example;
 
+import com.example.Service.UserService;
 import com.example.data.Address;
-import com.example.data.Book;
 import com.example.data.User;
 
 import javax.inject.Inject;
@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/user")
@@ -17,20 +18,20 @@ import java.util.List;
 public class UserResource {
 
     @Inject
-    EntityManager manager;
+    UserService userService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> listUsers() {
-        return manager.createQuery("select u from User u", User.class).getResultList();
+        return userService.listUsers();
     }
 
     @Path("/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public List<Address> updateUser(@PathParam("id") int id) {
-        return manager.createQuery("SELECT a FROM Address a WHERE a.user.userID = " + id, Address.class).getResultList();
+    public List<Address> getUserAddresses(@PathParam("id") int id) {
+        return userService.getUserAddresses(id);
     }
 
     @Path("/{id}")
@@ -39,18 +40,15 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Address addAddress(@PathParam("id") Integer id, Address address) {
-        User user = manager.createQuery("SELECT u FROM User u WHERE u.userID = " + id, User.class).getSingleResult();
-        address.setUser(user);
-        manager.merge(address);
-        return address;
+        return userService.addAddress(id, address);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public User saveUser(User user) {
-        manager.persist(user);
-        return user;
+    public Response saveUser(User user) {
+        userService.addUser(user);
+        return Response.ok(user).build();
     }
 }
