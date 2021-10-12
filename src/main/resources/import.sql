@@ -14,3 +14,15 @@ create table Address(addressID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     houseNumber int,
     FOREIGN KEY (userID) REFERENCES User(userID));
 insert into Address values(1,2,'Budapest', 'Kicsi utca',13);
+
+create table Product(productID int NOT NULL PRIMARY KEY  AUTO_INCREMENT,
+    userID int,
+    name varchar(30),
+    description varchar(200),
+    price int,
+    FOREIGN KEY (userID) REFERENCES User(userID));
+
+create table Login(loginID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    userID int,
+    dateTime DATETIME,
+    FOREIGN KEY (userID) REFERENCES User(userID));
