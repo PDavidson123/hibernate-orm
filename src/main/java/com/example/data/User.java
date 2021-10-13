@@ -8,7 +8,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userID;
+    private Long userID;
     private String name;
     private String password;
     @OneToMany(mappedBy = "user")
@@ -18,17 +18,17 @@ public class User {
 
     }
 
-    public User(Integer userID, String name, String password) {
+    public User(Long userID, String name, String password) {
         this.userID = userID;
         this.name = name;
         this.password = password;
     }
 
-    public Integer getUserID() {
+    public Long getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID) {
+    public void setUserID(Long userID) {
         this.userID = userID;
     }
 

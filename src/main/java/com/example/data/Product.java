@@ -7,7 +7,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productID;
+    private Long productID;
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
@@ -17,7 +17,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Integer productID, User user, String name, String description, Integer price) {
+    public Product(Long productID, User user, String name, String description, Integer price) {
         this.productID = productID;
         this.user = user;
         this.name = name;
@@ -25,11 +25,11 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getProductID() {
+    public Long getProductID() {
         return productID;
     }
 
-    public void setProductID(Integer productID) {
+    public void setProductID(Long productID) {
         this.productID = productID;
     }
 

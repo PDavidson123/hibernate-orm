@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import com.example.Repository.AddressRepository;
 import com.example.Repository.UserRepository;
 import com.example.data.Address;
 import com.example.data.User;
@@ -18,6 +19,8 @@ public class UserService {
 
     @Inject
     UserRepository userRepository;
+    @Inject
+    AddressRepository addressRepository;
 
     public Response addUser(User user) {
         if (!userRepository.userExist(user)) {
@@ -30,11 +33,11 @@ public class UserService {
     }
 
     public List<User> listUsers() {
-        return manager.createQuery("select u from User u", User.class).getResultList();
+        return userRepository.listAllUser();
     }
 
-    public List<Address> getUserAddresses(int id) {
-        return manager.createQuery("SELECT a FROM Address a WHERE a.user.userID = " + id, Address.class).getResultList();
+    public List<Address> getUserAddresses(Long id) {
+        return addressRepository.getUserAddresses(userRepository.findById(id));
     }
 
     public Address addAddress(int id, Address address) {

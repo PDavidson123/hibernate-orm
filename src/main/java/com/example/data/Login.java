@@ -8,7 +8,7 @@ public class Login {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer loginID;
+    private Long loginID;
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
@@ -17,17 +17,17 @@ public class Login {
 
     public Login() {}
 
-    public Login(Integer loginID, User user, Date dateTime) {
+    public Login(Long loginID, User user, Date dateTime) {
         this.loginID = loginID;
         this.user = user;
         this.dateTime = dateTime;
     }
 
-    public Integer getLoginID() {
+    public Long getLoginID() {
         return loginID;
     }
 
-    public void setLoginID(Integer loginID) {
+    public void setLoginID(Long loginID) {
         this.loginID = loginID;
     }
 

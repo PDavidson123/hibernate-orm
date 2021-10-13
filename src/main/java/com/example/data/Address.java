@@ -7,7 +7,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer addressID;
+    private Long addressID;
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
@@ -20,7 +20,15 @@ public class Address {
 
     }
 
-    public Address(Integer addressID, String city, String roadName, Integer houseNumber) {
+    public Address(Long addressID,User user, String city, String roadName, Integer houseNumber) {
+        this.addressID = addressID;
+        this.user = user;
+        this.city = city;
+        this.roadName = roadName;
+        this.houseNumber = houseNumber;
+    }
+
+    public Address(Long addressID, String city, String roadName, Integer houseNumber) {
         this.addressID = addressID;
         this.city = city;
         this.roadName = roadName;
@@ -35,11 +43,11 @@ public class Address {
         this.user = user;
     }
 
-    public Integer getAddressID() {
+    public Long getAddressID() {
         return addressID;
     }
 
-    public void setAddressID(Integer addressID) {
+    public void setAddressID(Long addressID) {
         this.addressID = addressID;
     }
 

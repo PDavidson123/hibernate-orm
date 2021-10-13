@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.Service.AddressService;
 import com.example.Service.UserService;
 import com.example.data.Address;
 import com.example.data.User;
@@ -19,6 +20,8 @@ public class UserResource {
 
     @Inject
     UserService userService;
+    @Inject
+    AddressService addressService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,7 +33,7 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public List<Address> getUserAddresses(@PathParam("id") int id) {
+    public List<Address> getUserAddresses(@PathParam("id") Long id) {
         return userService.getUserAddresses(id);
     }
 
@@ -39,8 +42,8 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Address addAddress(@PathParam("id") Integer id, Address address) {
-        return userService.addAddress(id, address);
+    public Response addAddress(@PathParam("id") Long id, Address address) {
+        return addressService.addNewAddress(id, address);
     }
 
     @POST

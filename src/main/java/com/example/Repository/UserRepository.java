@@ -18,4 +18,9 @@ public class UserRepository implements PanacheRepository<User> {
     public boolean userExist(User user) {
         return !list("name", user.getName()).isEmpty();
     }
+
+    public List<User> listAllUser() {
+        return listAll();
+    }
+
 }
