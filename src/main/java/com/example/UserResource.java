@@ -48,7 +48,6 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response saveUser(User user) {
-        userService.addUser(user);
-        return Response.ok(user).build();
+        return userService.addUser(user);
     }
 }
