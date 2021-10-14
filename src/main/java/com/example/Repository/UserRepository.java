@@ -16,11 +16,20 @@ public class UserRepository implements PanacheRepository<User> {
     }
 
     public boolean userExist(User user) {
-        return !list("name", user.getName()).isEmpty();
+        try {
+            return !list("name", user.getName()).isEmpty();
+        } catch(NullPointerException e) {
+            return false;
+        }
+
     }
 
     public List<User> listAllUser() {
         return listAll();
+    }
+
+    public User getUserByID(Long id) {
+        return findById(id);
     }
 
 }
