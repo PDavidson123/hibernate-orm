@@ -16,6 +16,13 @@ public class ProductResource {
     @Inject
     ProductService productService;
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public List<Product> listAllProduct() {
+        return productService.listAllProduct();
+    }
+
     /* Az ID a userID, akihez tartozik a product.*/
     @Path("/{id}")
     @POST

@@ -24,4 +24,8 @@ public class ProductRepository implements PanacheRepository<Product> {
         return list("userID", user.getUserID());
     }
 
+    public List<Product> listAllProduct() {
+        return listAll();
+    }
+
 }

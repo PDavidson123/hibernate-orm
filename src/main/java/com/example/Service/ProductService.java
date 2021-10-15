@@ -21,11 +21,17 @@ public class ProductService {
     UserRepository userRepository;
 
     public Response addNewProductToUser(Long id, Product product) {
-        if(productRepository.productExist(product)) {
-            return Response.status(400).entity("Product exist.").build();
-        } else {
+        if(userRepository.userExist(userRepository.getUserByID(id))) {
+            List<Product> userProducts= productRepository.getUserProducts(userRepository.getUserByID(id));
+            for(Product prod : userProducts) {
+                if(prod.getName().equals(product.getName())) {
+                    return Response.status(400).entity("Product exist with this userID.").build();
+                }
+            }
             product.setUser(userRepository.getUserByID(id));
             return productRepository.addNewProductToUser(product);
+        } else {
+            return Response.status(400).entity("Wrong userID.").build();
         }
     }
 
@@ -38,5 +44,8 @@ public class ProductService {
         }
     }
 
+    public List<Product> listAllProduct() {
+        return productRepository.listAllProduct();
+    }
 
 }
