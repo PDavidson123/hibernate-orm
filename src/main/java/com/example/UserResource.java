@@ -4,6 +4,7 @@ import com.example.Service.AddressService;
 import com.example.Service.UserService;
 import com.example.data.Address;
 import com.example.data.User;
+import com.example.security.jwt.GenerateToken;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

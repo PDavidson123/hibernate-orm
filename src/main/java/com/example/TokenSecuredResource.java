@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
+import com.example.security.jwt.GenerateToken;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @Path("/secured")
@@ -22,6 +23,12 @@ public class TokenSecuredResource {
 
     @Inject
     JsonWebToken jwt;
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getToken() {
+        return GenerateToken.generateDefaultToken();
+    }
 
     @GET()
     @Path("permit-all")
