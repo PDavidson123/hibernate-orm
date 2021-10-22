@@ -4,6 +4,7 @@ import com.example.Repository.AddressRepository;
 import com.example.Repository.UserRepository;
 import com.example.data.Address;
 import com.example.data.User;
+import com.example.security.jwt.GenerateToken;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,13 +24,25 @@ public class UserService {
     AddressRepository addressRepository;
 
     public Response addUser(User user) {
-        if (!userRepository.userExist(user)) {
+        if(user.getName() == null || user.getName().equals("")) {
+            return Response.status(400).entity("Empty name.").build();
+        } else if(user.getPassword() == null || user.getPassword().equals("")) {
+            return Response.status(400).entity("Empty password.").build();
+        } else if (!userRepository.userExist(user)) {
             userRepository.addUser(user);
-            return Response.ok(user).build();
+            return Response.ok("User created.").build();
         } else {
-            return Response.status(400).entity("User exist.").build();
+            return Response.status(400).entity("User name reserved.").build();
         }
 
+    }
+
+    public String checkLoginAndGetToken(User user) {
+        if(userRepository.canLogIn(user)) {
+            return GenerateToken.generateUserToken(user.getName());
+        } else {
+            return "Cannot log in.";
+        }
     }
 
     public List<User> listUsers() {

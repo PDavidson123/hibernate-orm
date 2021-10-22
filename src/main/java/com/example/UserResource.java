@@ -6,6 +6,7 @@ import com.example.data.Address;
 import com.example.data.User;
 import com.example.security.jwt.GenerateToken;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
@@ -30,6 +31,26 @@ public class UserResource {
         return userService.listUsers();
     }
 
+    @Path("/register") // A regisztrációt bárki elérheti.
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Transactional
+    public Response saveUser(User user) {
+        return userService.addUser(user);
+    }
+
+    @Path("/login")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @PermitAll
+    @Transactional
+    public String loginAndGetToken(User user) {
+        return userService.checkLoginAndGetToken(user);
+    }
+
+
     @Path("/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,11 +68,4 @@ public class UserResource {
         return addressService.addNewAddress(id, address);
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response saveUser(User user) {
-        return userService.addUser(user);
-    }
 }

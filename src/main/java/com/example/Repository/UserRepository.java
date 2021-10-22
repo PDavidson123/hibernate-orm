@@ -24,6 +24,19 @@ public class UserRepository implements PanacheRepository<User> {
 
     }
 
+    public boolean canLogIn(User user) {
+        try {
+            User usr = list("name", user.getName()).get(0);
+            if(usr.getPassword().equals(user.getPassword())) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
     public List<User> listAllUser() {
         return listAll();
     }

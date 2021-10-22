@@ -11,18 +11,19 @@ public class GenerateToken {
     public static String generateDefaultToken() {
         String token =
                 Jwt.issuer("https://example.com/issuer")
-                        .upn("jdoe@quarkus.io")
+                        .upn("username")
                         .groups(new HashSet<>(Arrays.asList("User", "Admin")))
-                        .claim(Claims.birthdate.name(), "2051-07-13")
+                        .expiresIn(1000*60*60)
                         .sign();
         return token;
     }
-    public static String generateVisitorToken() {
+
+    public static String generateUserToken(String username) {
         String token =
                 Jwt.issuer("https://example.com/issuer")
-                        .upn("jdoe@quarkus.io")
-                        .groups(new HashSet<>(Arrays.asList("Visitor")))
-                        .claim(Claims.birthdate.name(), "2051-07-13")
+                        .upn(username)
+                        .groups(new HashSet<>(Arrays.asList("User")))
+                        .expiresIn(1000*60*60)
                         .sign();
         return token;
     }
