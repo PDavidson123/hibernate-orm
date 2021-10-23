@@ -17,6 +17,11 @@ public class Login {
 
     public Login() {}
 
+    public Login(User user, Date dateTime) {
+        this.user = user;
+        this.dateTime = dateTime;
+    }
+
     public Login(Long loginID, User user, Date dateTime) {
         this.loginID = loginID;
         this.user = user;

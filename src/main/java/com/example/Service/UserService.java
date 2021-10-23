@@ -1,6 +1,7 @@
 package com.example.Service;
 
 import com.example.Repository.AddressRepository;
+import com.example.Repository.LoginRepository;
 import com.example.Repository.UserRepository;
 import com.example.data.Address;
 import com.example.data.User;
@@ -22,6 +23,8 @@ public class UserService {
     UserRepository userRepository;
     @Inject
     AddressRepository addressRepository;
+    @Inject
+    LoginRepository loginRepository;
 
     public Response addUser(User user) {
         if(user.getName() == null || user.getName().equals("")) {
@@ -39,6 +42,8 @@ public class UserService {
 
     public String checkLoginAndGetToken(User user) {
         if(userRepository.canLogIn(user)) {
+            User userwithID = userRepository.findByUserName(user);
+            loginRepository.addLoginDateToUser(userwithID);
             return GenerateToken.generateUserToken(user.getName());
         } else {
             return "Cannot log in.";
