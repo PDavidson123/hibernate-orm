@@ -64,6 +64,16 @@ public class ProductResource {
     @Transactional
     public List<Product> listUserProduct(@Context SecurityContext ctx) {
         String name = ctx.getUserPrincipal().getName();
-        return productService.getUserProducts(name);
+        return productService.listUserProducts(name);
+    }
+
+    @Path("/filter") //http://localhost:8080/product/filter?filterOpt=(all/my/more/less)&price=5000
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
+    @Transactional
+    public List<Product> filterProducts(@Context SecurityContext ctx, @QueryParam("filterOpt") String filterOpt, @QueryParam("price") Long price)  {
+        String name = ctx.getUserPrincipal().getName();
+        return productService.filterProducts(name, filterOpt, price);
     }
 }

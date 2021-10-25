@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class ProductRepository implements PanacheRepository<Product> {
@@ -60,4 +62,13 @@ public class ProductRepository implements PanacheRepository<Product> {
         return listAll();
     }
 
+    //true = more, false = less
+    public List<Product> getProductsByPrice(Long price, boolean priceLine) {
+        if(priceLine) {
+            return list("price > " + price);
+        } else {
+            return list("price < " + price);
+        }
+
+    }
 }

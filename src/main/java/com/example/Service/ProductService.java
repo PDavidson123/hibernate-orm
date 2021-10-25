@@ -36,7 +36,7 @@ public class ProductService {
         }
     }
 
-    public List<Product> getUserProducts(String name) {
+    public List<Product> listUserProducts(String name) {
         if (userRepository.findByUserName(name) != null) {
             return productRepository.getUserProducts(userRepository.findByUserName(name));
         } else {
@@ -46,11 +46,15 @@ public class ProductService {
 
     public Response editUserProduct(Long id, String name, Product product) {
         if (userRepository.findByUserName(name) != null) {
-            product.setUser(userRepository.findByUserName(name));
-            if(productRepository.updateProduct(id, product)) {
-                return Response.ok().entity("Product updated successfully.").build();
+            if(productRepository.getProductOwnerByID(id).equals(name)) {
+                product.setUser(userRepository.findByUserName(name));
+                if(productRepository.updateProduct(id, product)) {
+                    return Response.ok().entity("Product updated successfully.").build();
+                } else {
+                    return Response.status(400).entity("Can't update product.").build();
+                }
             } else {
-                return Response.status(400).entity("Can't update product.").build();
+                return Response.status(400).entity("No permission.").build();
             }
         } else {
             return Response.status(400).entity("User does not exist.").build();
@@ -77,4 +81,21 @@ public class ProductService {
         return productRepository.listAllProduct();
     }
 
+    /**** Filter ****/
+
+    public List<Product> filterProducts(String name, String filterOpt, Long price) {
+        switch(filterOpt)
+        {
+            case "all":
+                return listAllProduct();
+            case "my":
+                return listUserProducts(name);
+            case "more":
+                return productRepository.getProductsByPrice(price, true);
+            case "less":
+                return productRepository.getProductsByPrice(price, false);
+            default:
+                return null;
+        }
+    }
 }
