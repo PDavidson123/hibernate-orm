@@ -27,6 +27,18 @@ public class AddressRepository implements PanacheRepository<Address> {
         } catch(Exception e) {
             return Response.status(400).entity(e).build();
         }
+    }
 
+    public Boolean userAddressExist(Address address) {
+        List<Address> addresses = list("userID", address.getUser().getUserID());
+
+        /*contains won't work*/
+        for(Address addressItem : addresses) {
+            if(addressItem.getCity().equals(address.getCity()) && addressItem.getHouseNumber().equals(address.getHouseNumber()) && addressItem.getRoadName().equals(address.getRoadName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

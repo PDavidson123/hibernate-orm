@@ -42,7 +42,7 @@ public class UserService {
 
     public String checkLoginAndGetToken(User user) {
         if(userRepository.canLogIn(user)) {
-            User userwithID = userRepository.findByUserName(user);
+            User userwithID = userRepository.findByUserName(user.getName());
             loginRepository.addLoginDateToUser(userwithID);
             return GenerateToken.generateUserToken(user.getName());
         } else {

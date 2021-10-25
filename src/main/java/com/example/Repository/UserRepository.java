@@ -24,9 +24,9 @@ public class UserRepository implements PanacheRepository<User> {
 
     }
 
-    public User findByUserName(User user) {
+    public User findByUserName(String userName) {
         try {
-            return list("name", user.getName()).get(0);
+            return list("name", userName).get(0);
         } catch(Exception e) {
             return null;
         }

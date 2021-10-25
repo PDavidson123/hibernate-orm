@@ -23,3 +23,42 @@ vagy
 ```shell script
 ./mvnw quarkus:dev
 ```
+
+## Alkalmazás használata
+### Regisztráció
+
+2 lépéses regisztráció:
+1. Felhasználó registrációs: PUT-JSON: /user/register
+```shell script
+{
+    "name": "",
+    "password": ""
+}
+```
+2. Felhasználó címeinek hozzáadása: PUT-JSON /user/register_addresses
+```shell script
+[
+    {
+        "city": "",
+        "roadName": "",
+        "houseNumber": ""
+    },
+    {
+        "city": "",
+        "roadName": "",
+        "houseNumber": ""
+    }
+]
+```
+
+
+
+
+
+
+
+
+
+
+
+

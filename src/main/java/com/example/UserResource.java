@@ -7,13 +7,16 @@ import com.example.data.User;
 import com.example.security.jwt.GenerateToken;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @Path("/user")
@@ -37,8 +40,22 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Transactional
-    public Response saveUser(User user) {
-        return userService.addUser(user);
+    public String saveUser(User user) {
+        userService.addUser(user);
+        return userService.checkLoginAndGetToken(user);
+    }
+
+    @Path("/register_addresses")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
+    @Transactional
+    public Response addAddresses(@Context SecurityContext ctx, List<Address> addresses) {
+        String name = ctx.getUserPrincipal().getName();
+        for(Address address : addresses) {
+            addressService.addNewAddressWithUserName(name, address);
+        }
+        return Response.ok("All addresses successfully added.").build();
     }
 
     @Path("/login")
@@ -57,15 +74,6 @@ public class UserResource {
     @Transactional
     public List<Address> getUserAddresses(@PathParam("id") Long id) {
         return userService.getUserAddresses(id);
-    }
-
-    @Path("/{id}")
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response addAddress(@PathParam("id") Long id, Address address) {
-        return addressService.addNewAddress(id, address);
     }
 
 }
