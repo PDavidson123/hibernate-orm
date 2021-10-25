@@ -16,27 +16,30 @@ Ezzel felépítjük az adatbázis sémát, amelyet a projekt használni fog.
 ## Alkalmazás futtatása
 
 Miután terminállal a projekt mappájába navigáltunk, a következő paranccsal futtatjuk a projektet:
-```shell script
+```
 mvn quarkus:dev
 ```
 vagy
-```shell script
+```
 ./mvnw quarkus:dev
 ```
+## Alkalmazással kapcsolatos információk
+- Egy felhasználóhoz ugyanabból a címből csak 1 adható hozzá (tehát ugyanolyan város, utca, házszám kétszer nem szerepelhet)
+- Egy felhasználóhoz 2 ugyanolyan nevű product (termék) nem tartozhat
 
 ## Alkalmazás használata
 ### Regisztráció
 
 2 lépéses regisztráció:
 1. Felhasználó registrációs: PUT-JSON: /user/register
-```shell script
+```
 {
     "name": "",
     "password": ""
 }
 ```
 2. Felhasználó címeinek hozzáadása: PUT-JSON /user/register_addresses
-```shell script
+```
 [
     {
         "city": "",

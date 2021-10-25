@@ -34,7 +34,7 @@ public class UserResource {
         return userService.listUsers();
     }
 
-    @Path("/register") // A regisztrációt bárki elérheti.
+    @Path("/register")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,15 +65,6 @@ public class UserResource {
     @Transactional
     public String loginAndGetToken(User user) {
         return userService.checkLoginAndGetToken(user);
-    }
-
-
-    @Path("/{id}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public List<Address> getUserAddresses(@PathParam("id") Long id) {
-        return userService.getUserAddresses(id);
     }
 
 }

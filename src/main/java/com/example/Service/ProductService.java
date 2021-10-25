@@ -20,27 +20,56 @@ public class ProductService {
     @Inject
     UserRepository userRepository;
 
-    public Response addNewProductToUser(Long id, Product product) {
-        if(userRepository.userExist(userRepository.getUserByID(id))) {
-            List<Product> userProducts= productRepository.getUserProducts(userRepository.getUserByID(id));
-            for(Product prod : userProducts) {
-                if(prod.getName().equals(product.getName())) {
+    public Response addNewProductToUser(String name, Product product) {
+        if (userRepository.findByUserName(name) != null) {
+            User user = userRepository.findByUserName(name);
+            List<Product> userProducts = productRepository.getUserProducts(user);
+            for (Product prod : userProducts) {
+                if (prod.getName().equals(product.getName())) {
                     return Response.status(400).entity("Product exist with this userID.").build();
                 }
             }
-            product.setUser(userRepository.getUserByID(id));
+            product.setUser(user);
             return productRepository.addNewProductToUser(product);
         } else {
             return Response.status(400).entity("Wrong userID.").build();
         }
     }
 
-    public List<Product> getUserProducts(Long id) {
-        User user = userRepository.getUserByID(id);
-        if(userRepository.userExist(user)) {
-            return productRepository.getUserProducts(userRepository.getUserByID(id));
+    public List<Product> getUserProducts(String name) {
+        if (userRepository.findByUserName(name) != null) {
+            return productRepository.getUserProducts(userRepository.findByUserName(name));
         } else {
             return Collections.<Product>emptyList();
+        }
+    }
+
+    public Response editUserProduct(Long id, String name, Product product) {
+        if (userRepository.findByUserName(name) != null) {
+            product.setUser(userRepository.findByUserName(name));
+            if(productRepository.updateProduct(id, product)) {
+                return Response.ok().entity("Product updated successfully.").build();
+            } else {
+                return Response.status(400).entity("Can't update product.").build();
+            }
+        } else {
+            return Response.status(400).entity("User does not exist.").build();
+        }
+    }
+
+    public Response deleteUserProduct(Long id, String name) {
+        if (userRepository.findByUserName(name) != null) {
+            if(productRepository.getProductOwnerByID(id).equals(name)) {
+                if(productRepository.deleteProduct(id)) {
+                    return Response.ok().entity("Product deleted successfully.").build();
+                } else {
+                    return Response.status(400).entity("Can't delete product.").build();
+                }
+            } else {
+                return Response.status(400).entity("No permission.").build();
+            }
+        } else {
+            return Response.status(400).entity("User does not exist.").build();
         }
     }
 

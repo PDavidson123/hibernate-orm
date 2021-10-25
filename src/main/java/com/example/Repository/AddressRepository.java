@@ -32,7 +32,7 @@ public class AddressRepository implements PanacheRepository<Address> {
     public Boolean userAddressExist(Address address) {
         List<Address> addresses = list("userID", address.getUser().getUserID());
 
-        /*contains won't work*/
+        /*contains won't work beacuse of addressID*/
         for(Address addressItem : addresses) {
             if(addressItem.getCity().equals(address.getCity()) && addressItem.getHouseNumber().equals(address.getHouseNumber()) && addressItem.getRoadName().equals(address.getRoadName())) {
                 return true;

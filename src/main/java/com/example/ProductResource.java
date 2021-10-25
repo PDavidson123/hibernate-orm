@@ -3,11 +3,14 @@ package com.example;
 import com.example.Service.ProductService;
 import com.example.data.Product;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @Path("/product")
@@ -18,28 +21,49 @@ public class ProductResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
     @Transactional
     public List<Product> listAllProduct() {
         return productService.listAllProduct();
     }
 
-    /* Az ID a userID, akihez tartozik a product.*/
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
+    @Transactional
+    public Response addProduct(@Context SecurityContext ctx, Product product) {
+        String name = ctx.getUserPrincipal().getName();
+        return productService.addNewProductToUser(name, product);
+    }
+
     @Path("/{id}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
     @Transactional
-    public Response addNewProduct(@PathParam("id") Long id, Product product) {
-        return productService.addNewProductToUser(id, product);
+    public Response editProduct(@Context SecurityContext ctx,@PathParam("id") Long id, Product product) {
+        String name = ctx.getUserPrincipal().getName();
+        return productService.editUserProduct(id, name, product);
     }
 
-    /* Az ID a userID, akinek a productjait kérjük le.*/
     @Path("/{id}")
-    @GET
+    @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
     @Transactional
-    public List<Product> addNewProduct(@PathParam("id") Long id) {
-        return productService.getUserProducts(id);
+    public Response deleteProduct(@Context SecurityContext ctx,@PathParam("id") Long id) {
+        String name = ctx.getUserPrincipal().getName();
+        return productService.deleteUserProduct(id, name);
+    }
+
+    /**** Filter methods ****/
+    @Path("/filter/my_products")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({ "User", "Admin" })
+    @Transactional
+    public List<Product> listUserProduct(@Context SecurityContext ctx) {
+        String name = ctx.getUserPrincipal().getName();
+        return productService.getUserProducts(name);
     }
 }
