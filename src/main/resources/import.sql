@@ -26,3 +26,6 @@ create table Login(loginID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     userID bigint,
     dateTime DATETIME,
     FOREIGN KEY (userID) REFERENCES User(userID));
+
+create table TokenHash(tokenID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                   token bigint);

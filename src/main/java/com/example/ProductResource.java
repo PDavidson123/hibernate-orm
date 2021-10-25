@@ -56,16 +56,7 @@ public class ProductResource {
         return productService.deleteUserProduct(id, name);
     }
 
-    /**** Filter methods ****/
-    @Path("/filter/my_products")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "User", "Admin" })
-    @Transactional
-    public List<Product> listUserProduct(@Context SecurityContext ctx) {
-        String name = ctx.getUserPrincipal().getName();
-        return productService.listUserProducts(name);
-    }
+    /**** Filter method ****/
 
     @Path("/filter") //http://localhost:8080/product/filter?filterOpt=(all/my/more/less)&price=5000
     @GET

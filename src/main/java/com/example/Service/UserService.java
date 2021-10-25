@@ -32,8 +32,7 @@ public class UserService {
         } else if(user.getPassword() == null || user.getPassword().equals("")) {
             return Response.status(400).entity("Empty password.").build();
         } else if (!userRepository.userExist(user)) {
-            userRepository.addUser(user);
-            return Response.ok("User created.").build();
+            return userRepository.addUser(user);
         } else {
             return Response.status(400).entity("User name reserved.").build();
         }

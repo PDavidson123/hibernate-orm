@@ -5,14 +5,19 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.hibernate.orm.runtime.graal.service.jacc.Delete_StandardJaccServiceImpl;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<User> {
 
-    public User addUser(User user) {
-        persist(user);
-        return user;
+    public Response addUser(User user) {
+        try {
+            persist(user);
+            return Response.ok("User added successfully.").build();
+        } catch (Exception e) {
+            return Response.status(400).entity("Can't add the user.").build();
+        }
     }
 
     public boolean userExist(User user) {
