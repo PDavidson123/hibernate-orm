@@ -8,6 +8,9 @@ import org.eclipse.microprofile.jwt.Claims;
 import io.smallrye.jwt.build.Jwt;
 
 public class GenerateToken {
+
+    public static long expTime = 60*60;
+
     public static String generateDefaultToken() {
         String token =
                 Jwt.issuer("https://example.com/issuer")
@@ -23,8 +26,12 @@ public class GenerateToken {
                 Jwt.issuer("https://example.com/issuer")
                         .upn(username)
                         .groups(new HashSet<>(Arrays.asList("User")))
-                        .expiresIn(1000*60*60)
+                        .expiresIn(expTime)
                         .sign();
         return token;
+    }
+
+    public long getExpTime() {
+        return expTime;
     }
 }

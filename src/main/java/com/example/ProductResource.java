@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.Service.ProductService;
+import com.example.Service.TokenHashService;
 import com.example.data.Product;
 
 import javax.annotation.security.RolesAllowed;
@@ -18,13 +19,19 @@ public class ProductResource {
 
     @Inject
     ProductService productService;
+    @Inject
+    TokenHashService tokenHashService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "User", "Admin" })
     @Transactional
-    public List<Product> listAllProduct() {
-        return productService.listAllProduct();
+    public List<Product> listAllProduct(@Context SecurityContext ctx) {
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            return productService.listAllProduct();
+        } else {
+            return null;
+        }
     }
 
     @PUT
@@ -32,8 +39,12 @@ public class ProductResource {
     @RolesAllowed({ "User", "Admin" })
     @Transactional
     public Response addProduct(@Context SecurityContext ctx, Product product) {
-        String name = ctx.getUserPrincipal().getName();
-        return productService.addNewProductToUser(name, product);
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            String name = ctx.getUserPrincipal().getName();
+            return productService.addNewProductToUser(name, product);
+        } else {
+            return Response.status(400).entity("Wrong token.").build();
+        }
     }
 
     @Path("/{id}")
@@ -42,8 +53,12 @@ public class ProductResource {
     @RolesAllowed({ "User", "Admin" })
     @Transactional
     public Response editProduct(@Context SecurityContext ctx,@PathParam("id") Long id, Product product) {
-        String name = ctx.getUserPrincipal().getName();
-        return productService.editUserProduct(id, name, product);
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            String name = ctx.getUserPrincipal().getName();
+            return productService.editUserProduct(id, name, product);
+        } else {
+            return Response.status(400).entity("Wrong token.").build();
+        }
     }
 
     @Path("/{id}")
@@ -52,8 +67,12 @@ public class ProductResource {
     @RolesAllowed({ "User", "Admin" })
     @Transactional
     public Response deleteProduct(@Context SecurityContext ctx,@PathParam("id") Long id) {
-        String name = ctx.getUserPrincipal().getName();
-        return productService.deleteUserProduct(id, name);
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            String name = ctx.getUserPrincipal().getName();
+            return productService.deleteUserProduct(id, name);
+        } else {
+            return Response.status(400).entity("Wrong token.").build();
+        }
     }
 
     /**** Filter method ****/
@@ -64,7 +83,11 @@ public class ProductResource {
     @RolesAllowed({ "User", "Admin" })
     @Transactional
     public List<Product> filterProducts(@Context SecurityContext ctx, @QueryParam("filterOpt") String filterOpt, @QueryParam("price") Long price)  {
-        String name = ctx.getUserPrincipal().getName();
-        return productService.filterProducts(name, filterOpt, price);
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            String name = ctx.getUserPrincipal().getName();
+            return productService.filterProducts(name, filterOpt, price);
+        } else {
+            return null;
+        }
     }
 }

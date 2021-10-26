@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.Service.AddressService;
+import com.example.Service.TokenHashService;
 import com.example.Service.UserService;
 import com.example.data.Address;
 import com.example.data.User;
@@ -27,12 +28,8 @@ public class UserResource {
     UserService userService;
     @Inject
     AddressService addressService;
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<User> listUsers() {
-        return userService.listUsers();
-    }
+    @Inject
+    TokenHashService tokenHashService;
 
     @Path("/register")
     @PUT
@@ -51,11 +48,15 @@ public class UserResource {
     @RolesAllowed({ "User", "Admin" })
     @Transactional
     public Response addAddresses(@Context SecurityContext ctx, List<Address> addresses) {
-        String name = ctx.getUserPrincipal().getName();
-        for(Address address : addresses) {
-            addressService.addNewAddressWithUserName(name, address);
+        if (!tokenHashService.checkTokenLogout(ctx)) {
+            String name = ctx.getUserPrincipal().getName();
+            for (Address address : addresses) {
+                addressService.addNewAddressWithUserName(name, address);
+            }
+            return Response.ok("All addresses successfully added.").build();
+        } else {
+            return Response.status(400).entity("Wrong token.").build();
         }
-        return Response.ok("All addresses successfully added.").build();
     }
 
     @Path("/login")
@@ -65,6 +66,15 @@ public class UserResource {
     @Transactional
     public String loginAndGetToken(User user) {
         return userService.checkLoginAndGetToken(user);
+    }
+
+    @Path("/logout")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @PermitAll
+    @Transactional
+    public Response logOut(@Context SecurityContext ctx) {
+        return userService.logOut(ctx);
     }
 
 }

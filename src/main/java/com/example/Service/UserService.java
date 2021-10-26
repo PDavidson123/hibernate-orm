@@ -2,6 +2,7 @@ package com.example.Service;
 
 import com.example.Repository.AddressRepository;
 import com.example.Repository.LoginRepository;
+import com.example.Repository.TokenHashRepository;
 import com.example.Repository.UserRepository;
 import com.example.data.Address;
 import com.example.data.User;
@@ -11,13 +12,15 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @ApplicationScoped
 public class UserService {
-
-    @Inject
-    EntityManager manager;
 
     @Inject
     UserRepository userRepository;
@@ -25,6 +28,8 @@ public class UserService {
     AddressRepository addressRepository;
     @Inject
     LoginRepository loginRepository;
+    @Inject
+    TokenHashService tokenHashService;
 
     public Response addUser(User user) {
         if(user.getName() == null || user.getName().equals("")) {
@@ -57,11 +62,8 @@ public class UserService {
         return addressRepository.getUserAddresses(userRepository.findById(id));
     }
 
-    public Address addAddress(int id, Address address) {
-        User user = manager.createQuery("SELECT u FROM User u WHERE u.userID = " + id, User.class).getSingleResult();
-        address.setUser(user);
-        manager.merge(address);
-        return address;
+    public Response logOut(SecurityContext ctx) {
+        return tokenHashService.addValidTokenHash(ctx);
     }
 
 }
