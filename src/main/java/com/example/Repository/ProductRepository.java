@@ -50,24 +50,21 @@ public class ProductRepository implements PanacheRepository<Product> {
         return findById(id).getUser().getName();
     }
 
-    public boolean productExist(Product product) {
-        return !list("name", product.getName()).isEmpty();
-    }
-
     public List<Product> getUserProducts(User user) {
-        return list("userID", user.getUserID());
+        return list("Select p.name, p.description, p.price from Product p where userID = " + user.getUserID());
     }
 
     public List<Product> listAllProduct() {
-        return listAll();
+        return list("Select p.name, p.description, p.price from Product p");
     }
 
     //true = more, false = less
     public List<Product> getProductsByPrice(Long price, boolean priceLine) {
         if(priceLine) {
-            return list("price > " + price);
+            //return list("price > " + price);
+            return list("Select p.name, p.description, p.price from Product p where price > " + price);
         } else {
-            return list("price < " + price);
+            return list("Select p.name, p.description, p.price from Product p where price < " + price);
         }
 
     }
