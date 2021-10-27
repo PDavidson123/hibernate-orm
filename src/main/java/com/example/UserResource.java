@@ -32,7 +32,7 @@ public class UserResource {
     TokenHashService tokenHashService;
 
     @Path("/register")
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
@@ -42,7 +42,7 @@ public class UserResource {
     }
 
     @Path("/register_addresses")
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "User", "Admin" })
     @Transactional

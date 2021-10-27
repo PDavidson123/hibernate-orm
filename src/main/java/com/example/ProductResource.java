@@ -22,7 +22,7 @@ public class ProductResource {
     @Inject
     TokenHashService tokenHashService;
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "User", "Admin" })
     @Transactional
@@ -36,7 +36,7 @@ public class ProductResource {
     }
 
     @Path("/{id}")
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "User", "Admin" })
     @Transactional
