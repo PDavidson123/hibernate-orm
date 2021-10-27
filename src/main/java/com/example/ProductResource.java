@@ -22,18 +22,6 @@ public class ProductResource {
     @Inject
     TokenHashService tokenHashService;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "User", "Admin" })
-    @Transactional
-    public List<Product> listAllProduct(@Context SecurityContext ctx) {
-        if (!tokenHashService.checkTokenLogout(ctx)) {
-            return productService.listAllProduct();
-        } else {
-            return null;
-        }
-    }
-
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "User", "Admin" })

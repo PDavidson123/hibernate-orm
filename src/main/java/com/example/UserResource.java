@@ -60,6 +60,7 @@ public class UserResource {
 
     @Path("/login")
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     @Transactional
