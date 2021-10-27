@@ -47,7 +47,7 @@ public class ProductService {
     }
 
     public Response editUserProduct(Long id, String name, Product product) {
-        if(product.getName() == null || product.getName().equals("") || product.getDescription() == null || product.getPrice() == null) {
+        if("".equals(product.getName()) || product.getDescription() == null || product.getPrice() == null) {
             return Response.status(400).entity("Empty tags.").build();
         } else if (userRepository.findByUserName(name) != null) {
             if(productRepository.getProductOwnerByID(id).equals(name)) {
