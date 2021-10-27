@@ -8,6 +8,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,21 +53,30 @@ public class ProductRepository implements PanacheRepository<Product> {
     }
 
     public List<Product> getUserProducts(User user) {
-        return list("Select p.name, p.description, p.price from Product p where userID = " + user.getUserID());
+        return removeUserObj(list("userID", user.getUserID()));
     }
 
     public List<Product> listAllProduct() {
-        return list("Select p.name, p.description, p.price from Product p");
+        return removeUserObj(listAll());
     }
 
     //true = more, false = less
     public List<Product> getProductsByPrice(Long price, boolean priceLine) {
         if(priceLine) {
-            //return list("price > " + price);
-            return list("Select p.name, p.description, p.price from Product p where price > " + price);
+            return removeUserObj(list("price > " + price));
         } else {
-            return list("Select p.name, p.description, p.price from Product p where price < " + price);
+            return removeUserObj(list("price < " + price));
         }
 
+    }
+
+    private List<Product> removeUserObj(List<Product> prods) {
+        List<Product> copies = new ArrayList<Product>();
+        for(Product product : prods) {
+            product.setUser(null);
+            copies.add(new Product(product.getName(),product.getDescription(),product.getPrice(), product.getProductID()));
+        }
+
+        return copies;
     }
 }

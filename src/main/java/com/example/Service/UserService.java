@@ -65,7 +65,9 @@ public class UserService {
                     return "Cannot log in.";
                 }
             } else {
-                return "User created, but you need register at least 1 address. /user/register_addresses";
+                loginRepository.addLoginDateToUser(userWithID);
+                return "User created, but you need register at least 1 address. /user/register_addresses \n" +
+                        " Token: " + GenerateToken.generateUserToken(userWithID.getName());
             }
         } else {
             return "User does not exist.";
