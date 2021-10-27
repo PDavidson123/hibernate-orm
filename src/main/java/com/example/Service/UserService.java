@@ -45,13 +45,25 @@ public class UserService {
     }
 
     public String checkLoginAndGetToken(User user) {
-        if(userRepository.canLogIn(user)) {
-            User userwithID = userRepository.findByUserName(user.getName());
-            loginRepository.addLoginDateToUser(userwithID);
-            return GenerateToken.generateUserToken(user.getName());
+        User userWithID = userRepository.findByUserName(user.getName());
+
+        if(userWithID != null) {
+            if(getUserAddresses(userWithID.getUserID()).size() != 0) {
+                if(userRepository.canLogIn(user)) {
+
+                    loginRepository.addLoginDateToUser(userWithID);
+                    return GenerateToken.generateUserToken(user.getName());
+                } else {
+                    return "Cannot log in.";
+                }
+            } else {
+                return "User created, but you need register at least 1 address. /user/register_addresses";
+            }
         } else {
-            return "Cannot log in.";
+            return "User does not exist.";
         }
+
+
     }
 
     public List<User> listUsers() {
