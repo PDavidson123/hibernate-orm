@@ -9,7 +9,7 @@ docker run --name quarkus-db -e MYSQL_ROOT_PASSWORD=root -p 3310:3306 mysql
 Majd a terminállal navigáljunk az import.sql-t tartalmazó mappába. Ez a projekten belül található: /hibernate-orm/src/main/resources/import.sql
 Ez után futtassuk a következő parancsot:
 ```shell script
---docker exec -i quarkus-db mysql -uroot -proot < import.sql
+docker exec -i quarkus-db mysql -uroot -proot < import.sql
 ```
 Ezzel felépítjük az adatbázis sémát, amelyet a projekt használni fog.
 
