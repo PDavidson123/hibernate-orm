@@ -24,8 +24,11 @@ vagy
 ./mvnw quarkus:dev
 ```
 ## Alkalmazással kapcsolatos információk
+
+- Localhost alap elérése: http://localhost:8080 <-- A readme-ben látott linkek előtagja
 - Egy felhasználóhoz ugyanabból a címből csak 1 adható hozzá (tehát ugyanolyan város, utca, házszám kétszer nem szerepelhet)
 - Egy felhasználóhoz 2 ugyanolyan nevű product (termék) nem tartozhat
+- A termékekkel kapcsolatos endpointokhoz csak bejelentkezés után, valid tokennel férhetünk hozzá.
 
 ## Alkalmazás használata
 ### Regisztráció
@@ -53,8 +56,79 @@ vagy
     }
 ]
 ```
+A teljes regisztrációhoz legalább 1 address-t meg kell adni.
+
+### Bejelentkezés
+GET-JSON: /user/login - String-el tér vissza, amely vagy a tokenünk, vagy a belépés során adódott hibák szövege.
+```
+{
+    "name": "",
+    "password": ""
+}
+```
+Ha sikeres a belépés a kéréseink Headerjébe helyezzük bele:
+Key: Authorization
+Value: Bearer + kapott token
+### Kijelentkezés
+GET /user/logout - A kérésünkben tárolt token alapján kijelentkezteti a felhasználót.
+Ezzel a tokennel többet nem tud hozzáférni a szerver token-szükséges endpointjaihoz.
+
+### Termék hozzáadása
+PUT-JSON /product
+```
+{
+    "name": "",
+    "description": "",
+    "price": ""
+}
+```
+### Termék szerkesztése
+POST-JSON /product/{termék-ID}
+```
+{
+    "name": "",
+    "description": "",
+    "price": ""
+}
+```
+### Termék törlése
+DELETE /product/{termék-ID}
+
+### Filterek - termékek szűrése
+GET /product/filter?filterOpt=xxx&price=yyy
+
+- xxx - szűrési paraméter, amely a következő lehet:
+1. all - minden termék listázása (&price nem szükséges)
+2. my - saját termékek listázása (&price nem szükséges)
+3. more - price-nál nagyobb értékű termékek listázása
+4. less - price-nál kisebb értékű termékek listázása
+
+- yyy - a szűrni kívánt paraméterekhez tartozó ár
 
 ## Endpoint tesztek
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
