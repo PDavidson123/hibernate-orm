@@ -73,7 +73,6 @@ public class ProductRepository implements PanacheRepository<Product> {
     private List<Product> removeUserObj(List<Product> prods) {
         List<Product> copies = new ArrayList<Product>();
         for(Product product : prods) {
-            product.setUser(null);
             copies.add(new Product(product.getName(),product.getDescription(),product.getPrice(), product.getProductID()));
         }
 

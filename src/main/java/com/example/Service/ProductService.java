@@ -21,7 +21,9 @@ public class ProductService {
     UserRepository userRepository;
 
     public Response addNewProductToUser(String name, Product product) {
-        if (userRepository.findByUserName(name) != null) {
+        if (product.getName() == null || product.getName().equals("")) {
+            return Response.status(400).entity("Product don't have name.").build();
+        } else if (userRepository.findByUserName(name) != null) {
             User user = userRepository.findByUserName(name);
             List<Product> userProducts = productRepository.getUserProducts(user);
             for (Product prod : userProducts) {
@@ -45,7 +47,9 @@ public class ProductService {
     }
 
     public Response editUserProduct(Long id, String name, Product product) {
-        if (userRepository.findByUserName(name) != null) {
+        if(product.getName() == null || product.getName().equals("") || product.getDescription() == null || product.getPrice() == null) {
+            return Response.status(400).entity("Empty tags.").build();
+        } else if (userRepository.findByUserName(name) != null) {
             if(productRepository.getProductOwnerByID(id).equals(name)) {
                 product.setUser(userRepository.findByUserName(name));
                 if(productRepository.updateProduct(id, product)) {
