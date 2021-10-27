@@ -46,13 +46,14 @@ public class UserService {
 
     public String checkLoginAndGetToken(User user) {
         User userWithID = userRepository.findByUserName(user.getName());
-
         if(userWithID != null) {
-            if(getUserAddresses(userWithID.getUserID()).size() != 0) {
-                if(userRepository.canLogIn(user)) {
+            if(loginRepository.isUserLoggedIn(userWithID.getUserID())) {
+                return userWithID.getName() + " has a valid token.";
+            } else if(getUserAddresses(userWithID.getUserID()).size() != 0) {
+                if(userRepository.canLogIn(userWithID)) {
 
                     loginRepository.addLoginDateToUser(userWithID);
-                    return GenerateToken.generateUserToken(user.getName());
+                    return GenerateToken.generateUserToken(userWithID.getName());
                 } else {
                     return "Cannot log in.";
                 }

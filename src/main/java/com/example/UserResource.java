@@ -37,9 +37,8 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Transactional
-    public String saveUser(User user) {
-        userService.addUser(user);
-        return userService.checkLoginAndGetToken(user);
+    public Response saveUser(User user) {
+        return userService.addUser(user);
     }
 
     @Path("/register_addresses")

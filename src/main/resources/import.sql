@@ -4,8 +4,8 @@ use UserSchema;
 create table User(userID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name varchar(50),
     password varchar(50));
-insert into User values(1,'dawe','sziauram123');
-insert into User values(2,'sanyika','oops123');
+insert into User values(1,'dawe','1869249386');
+insert into User values(2,'sanyika','-1281561745');
 
 create table Address(addressID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     userID bigint,
