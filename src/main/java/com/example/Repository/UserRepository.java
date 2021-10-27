@@ -13,13 +13,13 @@ import static java.lang.Integer.parseInt;
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<User> {
 
-    public Response addUser(User user) {
+    public boolean addUser(User user) {
         try {
             user.setPassword(String.valueOf(user.getPassword().hashCode()));
             persist(user);
-            return Response.status(201).entity("User added successfully. You need register at least 1 address. /user/register_addresses").build();
+            return true;
         } catch (Exception e) {
-            return Response.status(400).entity("Can't add the user.").build();
+            return false;
         }
     }
 

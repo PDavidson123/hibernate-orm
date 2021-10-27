@@ -34,7 +34,7 @@ public class UserResource {
     @Path("/register")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     @Transactional
     public Response saveUser(User user) {

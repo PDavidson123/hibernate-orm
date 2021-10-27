@@ -37,7 +37,14 @@ public class UserService {
         } else if(user.getPassword() == null || user.getPassword().equals("")) {
             return Response.status(400).entity("Empty password.").build();
         } else if (!userRepository.userExist(user)) {
-            return userRepository.addUser(user);
+            if(userRepository.addUser(user)) {
+                loginRepository.addLoginDateToUser(user);
+
+                return Response.status(201).entity("User added successfully. You need register at least 1 address. /user/register_addresses " +
+                        "\n Token: " + GenerateToken.generateUserToken(user.getName()) ).build();
+            } else {
+                return Response.status(400).entity("Can't add the user.").build();
+            }
         } else {
             return Response.status(400).entity("User name reserved.").build();
         }
