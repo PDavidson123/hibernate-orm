@@ -23,9 +23,9 @@ public class AddressRepository implements PanacheRepository<Address> {
     public Response addNewAddress(Address address) {
         try {
             persist(address);
-            return Response.ok().entity("Address added successfully.").build();
+            return Response.status(201).entity("Address added successfully.").build();
         } catch(Exception e) {
-            return Response.status(400).entity(e).build();
+            return Response.status(400).entity("Unable to add address.").build();
         }
     }
 

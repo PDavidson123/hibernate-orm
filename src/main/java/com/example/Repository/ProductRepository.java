@@ -18,7 +18,7 @@ public class ProductRepository implements PanacheRepository<Product> {
     public Response addNewProductToUser(Product product) {
         try {
             persist(product);
-            return Response.ok("Product added successfully.").build();
+            return Response.status(201).entity("Product added successfully.").build();
         } catch (Exception e) {
             return Response.status(400).entity("Can't add the item.").build();
         }

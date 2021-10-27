@@ -16,10 +16,8 @@ public class UserRepository implements PanacheRepository<User> {
     public Response addUser(User user) {
         try {
             user.setPassword(String.valueOf(user.getPassword().hashCode()));
-            System.out.println("sziauram123".hashCode());
-            System.out.println("oops123".hashCode());
             persist(user);
-            return Response.ok("User added successfully. You need register at least 1 address. /user/register_addresses").build();
+            return Response.status(201).entity("User added successfully. You need register at least 1 address. /user/register_addresses").build();
         } catch (Exception e) {
             return Response.status(400).entity("Can't add the user.").build();
         }

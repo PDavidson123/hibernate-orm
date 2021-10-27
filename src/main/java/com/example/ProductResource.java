@@ -43,7 +43,7 @@ public class ProductResource {
             String name = ctx.getUserPrincipal().getName();
             return productService.addNewProductToUser(name, product);
         } else {
-            return Response.status(400).entity("Wrong token.").build();
+            return Response.status(403).entity("Wrong token.").build();
         }
     }
 
@@ -57,7 +57,7 @@ public class ProductResource {
             String name = ctx.getUserPrincipal().getName();
             return productService.editUserProduct(id, name, product);
         } else {
-            return Response.status(400).entity("Wrong token.").build();
+            return Response.status(403).entity("Wrong token.").build();
         }
     }
 
@@ -71,7 +71,7 @@ public class ProductResource {
             String name = ctx.getUserPrincipal().getName();
             return productService.deleteUserProduct(id, name);
         } else {
-            return Response.status(400).entity("Wrong token.").build();
+            return Response.status(403).entity("Wrong token.").build();
         }
     }
 
